@@ -25,17 +25,9 @@ const connection = mysql.createConnection({
 });
 
 //GET USERS
-router.get('/', async (req, res) => {
-
-	const sql = 'SELECT * FROM user';
-	await connection.query(sql, (err, data) => {
-		if (err) throw error;
-		if (data.length > 0) {
-			res.json(data);
-		} else {
-			res.send('Not results');
-		}
-	});
+router.post('/status', verifyToken, async (req, res) => {
+	// let user = jwt.decode(req.headers.authorization.split(" ")[1]);
+	res.status(200).json("Status: OK");
 });
 
 // Storage tokens
@@ -106,6 +98,7 @@ router.post('/login', async (req, res) => {
 //LOGOUT ENDPOINT
 router.post('/logout', verifyToken, (req, res) => {
 	const refreshToken = req.body.token;
+	console.log(refreshTokens);
 	// Delete token from array to logout
 	refreshTokens = refreshTokens.filter((token) => token !== refreshToken);
 	res.status(200).json("You logged out successfully!");
