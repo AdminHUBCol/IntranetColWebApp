@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
 });
 
 //GET USERS
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
 
 	const sql = 'SELECT * FROM user';
 	await connection.query(sql, (err, data) => {
