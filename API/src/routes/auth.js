@@ -73,26 +73,26 @@ router.post('/refresh', (req, res) => {
 router.post('/login', async (req, res) => {
 	try {
 		const sql = `SELECT * FROM user WHERE email = "${req.body.email}"`;
-		console.log("HEREEE");
-		const user = await connection.query(sql, (err, data) => {
+		await connection.query(sql, (err, data) => {
 			if (err) throw error;
 			if (data.length > 0) {
-				console.log(data);
-				// Create session token - JWT
-				const accessToken = generateAccessToken(data);
-				const refreshToken = generateRefreshToken(data);
-				// Storage token into array
-				refreshTokens.push(refreshToken);
-				// console.log(refreshTokens);
-				// Return info without password
-				// console.log(data._doc);
-				// const {...data_ } = data._doc;
-				res.status(200).json({
-					data,
-					accessToken,
-					refreshToken,
-				});
-				// res.json(data);
+				//console.log(data[0].password);
+				if (data[0].password === req.body.password) {
+					// Create session token - JWT
+					const accessToken = generateAccessToken(data);
+					const refreshToken = generateRefreshToken(data);
+					// Storage token into array
+					refreshTokens.push(refreshToken);
+					// Return info without password
+					// const {...data_ } = data._doc;
+					res.status(200).json({
+						data,
+						accessToken,
+						refreshToken,
+					});
+				} else {
+					res.status(403).json('Password wrong');
+				}
 			} else {
 				res.status(404).json('User not found');
 			}
