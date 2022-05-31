@@ -72,33 +72,33 @@ router.post('/refresh', (req, res) => {
 //LOGIN ENDPOINT
 router.post('/login', async (req, res) => {
 	try {
-		const user = await User.findOne({ email: req.body.email });
-		// Check user
-		if (!user)
-			return res.status(404).json("Login failed");
-		// Check if user is active
-		if (!user.status)
-			return res.status(403).json("Login failed");
-		// Check password
-		const hashedPassword = CryptoJS.AES.decrypt(user.password, process.env.PASS_SECRET);
-		OriginalPassword = hashedPassword.toString(CryptoJS.enc.Utf8);
-		if (OriginalPassword !== req.body.password)
-			return res.status(401).json("Login failed");
-		//console.log(user)
-		// Create session token - JWT
-		const accessToken = generateAccessToken(user);
-		const refreshToken = generateRefreshToken(user);
-		// Storage token into array
-		refreshTokens.push(refreshToken);
-		// console.log(refreshTokens);
-		// Return info without password
-		const { password, ...user_ } = user._doc;
-		res.status(200).json({
-			user_,
-			accessToken,
-			refreshToken,
+		const sql = `SELECT * FROM user WHERE email = "${req.body.email}"`;
+		console.log("HEREEE");
+		const user = await connection.query(sql, (err, data) => {
+			if (err) throw error;
+			if (data.length > 0) {
+				console.log(data);
+				// Create session token - JWT
+				const accessToken = generateAccessToken(data);
+				const refreshToken = generateRefreshToken(data);
+				// Storage token into array
+				refreshTokens.push(refreshToken);
+				// console.log(refreshTokens);
+				// Return info without password
+				// console.log(data._doc);
+				// const {...data_ } = data._doc;
+				res.status(200).json({
+					data,
+					accessToken,
+					refreshToken,
+				});
+				// res.json(data);
+			} else {
+				res.status(404).json('User not found');
+			}
 		});
 	} catch (error) {
+		console.log(error);
 		return res.status(500).json(error);
 	}
 });

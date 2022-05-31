@@ -29,10 +29,10 @@ router.get('/', async (req, res) => {
 });
 
 // GET ALL PARTICIPANTS INFO
-router.get('/participantsAllData', (req, res) => {
+router.get('/participantsAllData', async (req, res) => {
 	const sql = 'SELECT * FROM participantsHBTNAPI';
 
-	connection.query(sql, (error, results) => {
+	await connection.query(sql, (error, results) => {
 		if (error) throw error;
 		if (results.length > 0) {
 			res.json(results);
@@ -43,10 +43,10 @@ router.get('/participantsAllData', (req, res) => {
 });
 
 // GET PARTICIPANT INTO BY ID
-router.get('/participantsAllData/:intranetUserId', (req, res) => {
+router.get('/participantsAllData/:intranetUserId', async (req, res) => {
 	const { intranetUserId } = req.params
 	const sql = `SELECT * FROM participantsHBTNAPI WHERE intranetUserId = ${intranetUserId}`;
-	connection.query(sql, (error, results) => {
+	await connection.query(sql, (error, results) => {
 		if (error) throw error;
 		if (results.length > 0) {
 			res.json(results);
