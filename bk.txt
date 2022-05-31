@@ -1,5 +1,5 @@
 const express = require('express');
-const mysql = require('mysql2');
+const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const PORT = process.env.PORT || 3050;
 const app = express();
@@ -21,11 +21,23 @@ connection.connect(error => {
     if (error) throw error;
     console.log('Database server running!');
 });
-
+//connection.end();
 
 //route-home
 app.get('/', (req, res) => {
-    res.send('IntranetColWebApp API!');
+    // res.send('IntranetColWebApp API!');
+
+    const sql = 'SELECT * FROM user';
+
+    connection.query(sql, (err, data) => {
+        if (err) throw error;
+        if (data.length > 0) {
+            res.json(data);
+        } else {
+            res.send('Not results');
+        }
+    });
+
 });
 
 //api customers
