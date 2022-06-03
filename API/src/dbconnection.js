@@ -10,12 +10,6 @@ const connection = mysql.createConnection({
 	database: process.env.DB_NAME,
 	port: process.env.DB_PORT,
 });
-//check connection
-// connection.connect(error => {
-// 	if (error) throw error;
-// 	console.log('Database server running!');
-// });
-//connection.end();
 
 const connect = async () => {
 	try {

@@ -19,9 +19,11 @@ app.use(express.json());
 // Get route modules
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const getDataRoute = require("./routes/getData");
 
 // Blueprints of endpoints
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/getData", getDataRoute);
 
 module.exports = app;

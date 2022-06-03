@@ -14,15 +14,7 @@ const { generateAccessToken, generateRefreshToken } = require('../modules/tokenG
 const { verifyToken } = require('../modules/verifyAuthorization');
 
 // Connection -------
-const mysql = require('mysql');
-//Mysql Connection // Test in local
-const connection = mysql.createConnection({
-	host: process.env.DB_HOST,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASS,
-	database: process.env.DB_NAME,
-	port: process.env.DB_PORT,
-});
+const { connection } = require('../dbconnection')
 
 //GET USERS
 router.post('/status', verifyToken, async (req, res) => {
