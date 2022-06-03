@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
 });
 
 //GET USERS
-router.get('/', verifyToken, async (req, res) => {
+router.get('/', async (req, res) => {
 
 	const sql = 'SELECT * FROM user';
 	await connection.query(sql, (err, data) => {
@@ -28,7 +28,7 @@ router.get('/', verifyToken, async (req, res) => {
 	});
 });
 
-// GET ALL PARTICIPANTS INFO
+// GET participantsHBTNAPI
 router.get('/participantsAllData', async (req, res) => {
 	const sql = 'SELECT * FROM participantsHBTNAPI';
 
@@ -42,7 +42,7 @@ router.get('/participantsAllData', async (req, res) => {
 	});
 });
 
-// GET PARTICIPANT INTO BY ID
+// GET participantsHBTNAPI by User ID
 router.get('/participantsAllData/:intranetUserId', async (req, res) => {
 	const { intranetUserId } = req.params
 	const sql = `SELECT * FROM participantsHBTNAPI WHERE intranetUserId = ${intranetUserId}`;
@@ -55,5 +55,79 @@ router.get('/participantsAllData/:intranetUserId', async (req, res) => {
 		}
 	});
 });
+
+// GET participantsInfo
+router.get('/participantsInfo', async (req, res) => {
+	const sql = 'SELECT * FROM participantsInfo';
+
+	await connection.query(sql, (error, results) => {
+		if (error) throw error;
+		if (results.length > 0) {
+			res.json(results);
+		} else {
+			res.send('Not results');
+		}
+	});
+});
+
+// GET paymentStatusHBTNAPI
+router.get('/paymentStatusHBTNAPI', async (req, res) => {
+	const sql = 'SELECT * FROM paymentStatusHBTNAPI';
+
+	await connection.query(sql, (error, results) => {
+		if (error) throw error;
+		if (results.length > 0) {
+			res.json(results);
+		} else {
+			res.send('Not results');
+		}
+	});
+});
+
+// GET statusLogHBTNAPI
+router.get('/statusLogHBTNAPI', async (req, res) => {
+	const sql = 'SELECT * FROM statusLogHBTNAPI';
+
+	await connection.query(sql, (error, results) => {
+		if (error) throw error;
+		if (results.length > 0) {
+			res.json(results);
+		} else {
+			res.send('Not results');
+		}
+	});
+});
+
+
+// GET userReportsHBTNAPI
+router.get('/userReportsHBTNAPI', async (req, res) => {
+	const sql = 'SELECT * FROM userReportsHBTNAPI';
+
+	await connection.query(sql, (error, results) => {
+		if (error) throw error;
+		if (results.length > 0) {
+			res.json(results);
+		} else {
+			res.send('Not results');
+		}
+	});
+});
+
+
+// GET workingStatusHBTNAPI
+router.get('/workingStatusHBTNAPI', async (req, res) => {
+	const sql = 'SELECT * FROM workingStatusHBTNAPI';
+
+	await connection.query(sql, (error, results) => {
+		if (error) throw error;
+		if (results.length > 0) {
+			res.json(results);
+		} else {
+			res.send('Not results');
+		}
+	});
+});
+
+
 
 module.exports = router;
